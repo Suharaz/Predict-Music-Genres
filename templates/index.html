@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Genre Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 600px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .progress {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: none;
+        }
+        .progress-bar {
+            width: 0;
+            height: 10px;
+            background-color: #4CAF50;
+            text-align: center;
+            line-height: 10px;
+            color: white;
+        }
+        #results-table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #results-table th, #results-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tải lên file nhạc  WAV để dự đoán thể loại </h1>
+        <form id="uploadForm" action="/predict" method="post" enctype="multipart/form-data">
+            <input type="file" name="files[]" accept=".wav" multiple required>
+            <input type="submit" value="Predict">
+        </form>
+        <div class="progress" id="progress">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <table id="results-table">
+            <thead>
+                <tr>
+                    <th>Tên file</th>
+                    <th>Thể loại dự đoán</th>
+                    <th>Xác suất</th>
+                </tr>
+            </thead>
+            <tbody id="results-body"></tbody>
+        </table>
+    </div>
+    <script>
+        const form = document.getElementById('uploadForm');
+        const progressBar = document.getElementById('progress-bar');
+        const progress = document.getElementById('progress');
+        const resultsTable = document.getElementById('results-body');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            progress.style.display = 'block';
+            progressBar.style.width = '0%';
+
+            // Xóa kết quả hiển thị trước đó
+            resultsTable.innerHTML = '';
+
+            const formData = new FormData(form);
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '/predict', true);
+            let progressInterval = setInterval(() => {
+                let currentWidth = parseFloat(progressBar.style.width);
+                if (currentWidth < 85) {
+                    progressBar.style.width = (currentWidth + 1) + '%';
+                } else {
+                    clearInterval(progressInterval);
+                }
+            }, 150);
+
+            xhr.onload = () => {
+                clearInterval(progressInterval);
+                progress.style.display = 'none';
+
+                if (xhr.status === 200) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        displayResults(response.results);
+                    } catch (error) {
+                        console.error('Error parsing server response:', error);
+                        resultsTable.innerText = 'Error parsing server response.';
+                    }
+                } else {
+                    resultsTable.innerText = 'Lỗiiiiiiiiiiii.';
+                }
+            };
+
+            xhr.send(formData);
+        });
+
+        function displayResults(results) {
+            results.forEach(result => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${result.file}</td>
+                    <td>${result.predicted_genre}</td>
+                    <td>${result.probability.toFixed(4)}</td>
+                `;
+                resultsTable.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -25,7 +25,10 @@ Các đặc trưng âm thanh được liệt kê dưới đây thường đượ
 
 Các đặc trưng này khi kết hợp với nhau tạo thành một hệ thống mạnh mẽ để phân loại các thể loại âm nhạc khác nhau dựa trên các đặc điểm phổ biến và độc đáo của từng thể loại.
 
-
+## How Run:
+- git clone https://github.com/Suharaz/Predict-Music-Genres.git
+- pip install -r requirements.txt
+- python app.py
 
 
 

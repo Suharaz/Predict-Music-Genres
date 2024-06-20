@@ -1,7 +1,6 @@
-scikit-learn
-imbalanced-learn
-pandas
-librosa
-Flask
-joblib
-numpy
+scikit-learn==1.5.0
+pandas==2.2.2
+librosa==0.10.2.post1
+Flask==3.0.3
+joblib==1.4.2
+numpy==1.26.4

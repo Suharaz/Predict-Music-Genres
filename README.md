@@ -25,9 +25,7 @@ Các đặc trưng âm thanh được liệt kê dưới đây thường đượ
 
 Các đặc trưng này khi kết hợp với nhau tạo thành một hệ thống mạnh mẽ để phân loại các thể loại âm nhạc khác nhau dựa trên các đặc điểm phổ biến và độc đáo của từng thể loại.
 
-## Cách sử dụng Code
-- Git clone 
-- pip install -r requirements.txt
-- Run file model/train_model.py nếu muốn thay train mô hình hoặc thay đổi tham số
-- Run file app.py để chạy xem demo
+
+
+
 

@@ -29,3 +29,4 @@ Các đặc trưng này khi kết hợp với nhau tạo thành một hệ thố
 
 
 
+![21](https://github.com/Suharaz/Predict-Music-Genres/assets/88641157/8be6707f-b4b1-42bf-bfd9-23c60896cb2e)
